@@ -1,7 +1,15 @@
 
 const express = require('express')
 const app = express()
-const server = require('http').createServer(app);
+const http = require('http').createServer(app);
+
+
+const PORT = process.env.PORT || 3000
+
+
+http.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`)
+})
 
 
 app.use(express.static(__dirname + '/public'))
@@ -9,11 +17,10 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 })
-
 //Node server which will handle socket io connections.
-const io = require('socket.io')(server) //port=8000
+const io = require('socket.io')(http) //port=8000
 
-const users = {}
+
 
 // if any new user connects, inform to all
 io.on('connection', socket => {
